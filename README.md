@@ -65,8 +65,20 @@ cd ../..
 ```bash
 python3 convert_to_yolo.py
 ```
-### Training
+### Train, validate & predict the model
 #### 1. Train the model
 ```bash
 yolo train data=football-detection-v8.yaml model=yolov8m.pt epochs=50 imgsz=640 
+```
+#### 2. Validate the model accuracy
+```bash
+yolo detect val model=yolov8m.pt
+```
+#### 3. Predict using model
+```bash
+yolo detect predict model=yolov8m.pt source=data/test/images/5678_jpg.rf.9d589921906c319c3d76ced9266a80c6.jpg
+```
+#### 4. Export model to ONNX format
+```bash
+yolo export model=yolov8m.pt format=onnx
 ```
