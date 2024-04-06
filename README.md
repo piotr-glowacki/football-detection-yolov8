@@ -1,140 +1,71 @@
 # Football Detection Model
-The model's goal is to detect players and ball on the pitch based on https://huggingface.co/datasets/keremberke/football-object-detection dataset. This repository contains two additional .py files: convert_to_gray.py, which converts images to gray using cv and download_data.py which is responsible for successfully downloading the data. Git and Python required to be installed and set up.
+This repository is designed to detect football players and the ball on the pitch using the [football-object-detection dataset](https://huggingface.co/datasets/keremberke/football-object-detection) hosted on Hugging Face. It includes utility script for converting annotations to YOLO format, as in original dataset the annotations files format is COCO.
 
-## Installation
-
-### 1. Create & go to football_detection folder:
+## Prerequisites
+Ensure you have Git and Python installed on your system. Additionally, `unzip` utility should be installed to handle data extraction:
+```bash
+sudo apt install git python3 python3-pip unzip
+```
+## Setup
+#### 1. Create and navigate to the project directory:
 ```bash
 mkdir football_detection_v8 && cd football_detection_v8
 ```
-### 2. Download all the files in this repository and paste them into 'football_detection' folder.
-### 3. Install requirements
+#### 2. Clone this repository:
+```bash
+git clone https://github.com/piotr-glowacki/football-detection-yolov8.git
+```
+#### 3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-From now on you can use ultralytics directly with CLI with 'yolo' command.
-### 4. Create a file called 'football-detection.yaml'
+#### 4. Adjust the path in dataset configuration as necessary:
 ```bash
 nano football-detection-v8.yaml
 ```
-and paste inside:
-```python
-path: /home/pglowacki/piotr.glowacki2/football_detection_v8/data  # dataset root dir
-train: train/images
-val: val/images
-test: test/images
-
-# Classes
-nc: 2  # number of classes
-names:
-  0: ball
-  1: player
-```
-Be sure to adjust the absolute path to your needs.
-### 5. Create a 'data' folder:
+#### 5. Prepare the data directory:
 ```bash
 mkdir data
 ```
-### 6. Install 'unzip' command if not already installed:
-```bash
-sudo apt install unzip
-```
 
 ## Usage
-
-### 1. Download the data
-Go to 'data' folder:
+### Data Management
+#### 1. Navigate to the data directory:
 ```bash
 cd data
 ```
-* train set:
+#### 2. Download and extract the datasets:
+* For the training set:
 ```bash
 curl -L -o train.zip https://huggingface.co/datasets/keremberke/football-object-detection/resolve/main/data/train.zip
 unzip train.zip -d train
 rm train.zip
 ```
-* test set:
+* For the test set:
 ```bash
 curl -L -o test.zip https://huggingface.co/datasets/keremberke/football-object-detection/resolve/main/data/test.zip
 unzip test.zip -d test
 rm test.zip
 ```
-* val set:
+* For the val set:
 ```bash
 curl -L -o valid.zip https://huggingface.co/datasets/keremberke/football-object-detection/resolve/main/data/valid.zip
 unzip valid.zip -d val
 rm valid.zip
 ```
-### 2. Convert to YOLO format
+### Preprocessing
+#### 1. Organize images and labels in appropriate directories:
 ```bash
-cd train
-mkdir images labels
+cd train && mkdir images labels && mv *.jpg images/
+cd ../test && mkdir images labels && mv *.jpg images/
+cd ../val && mkdir images labels && mv *.jpg images/
+cd ..
 ```
-* move all the images (files with .jpg format) to 'images' folders:
+#### 2. Convert dataset to YOLO format:
 ```bash
-mv *.jpg images/
+python3 convert_to_yolo.py
 ```
-* repeat it in test and val folders
+#### 3. Train the model
 ```bash
-cd ../test; mkdir images labels; mv *.jpg images/
-cd ../val; mkdir images labels; mv *.jpg images/
-```
-* run the convert_to_yolo.py script in 'football_detection_v8' folder:
-```bash
-cd ..; python3 convert_to_yolo.py
-```
-### 3. Train the model
-```bash
-yolo train data=football-detection-v8.yaml model=yolov8m.pt epochs=50 lr0=0.01 imgsz=640 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 3. Convert images to gray
-```bash
-python convert_images_to_gray.py
-```
-
-### 2. Clone yolov8 repository to the folder:
-```bash
-git clone https://github.com/ultralytics/ultralytics.git
-```
-### 3. Go to 'ultralytics' folder:
-```bash
-cd ultralytics
-```
-### 4. Download the weights from the repository (I used 'm' size of the model):
-```bash
-wget https://github.com/ultralytics/assets/releases/download/v8.1.0/yolov8m.pt
-```
-### 5. Go to 'ultralytics/cfg/models/v8' folder
-```bash
-cd ultralytics/cfg/models/v8
-```
-### 6. Copy 'yolov8.yaml' file:
-```bash
-cp yolov8.yaml football-detect.yaml
-```
-### 7. Change the number of classes in new file:
-```bash
-nano football-detect.yaml
-```
-```python
-# parameters
-nc: 2  # number of classes
-```
-### 8. Go to 'football_detection/ultralytics/ultralytics/data':
-```bash
-cd football_detection/ultralytics/ultralytics/data
+yolo train data=football-detection-v8.yaml model=yolov8m.pt epochs=50 imgsz=640 
 ```
