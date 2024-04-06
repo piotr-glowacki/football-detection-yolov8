@@ -7,13 +7,13 @@ Ensure you have Git and Python installed on your system. Additionally, `unzip` u
 sudo apt install git python3 python3-pip unzip
 ```
 ## Setup
-#### 1. Create and navigate to the project directory:
-```bash
-mkdir football_detection_v8 && cd football_detection_v8
-```
-#### 2. Clone this repository:
+#### 1. Clone this repository:
 ```bash
 git clone https://github.com/piotr-glowacki/football-detection-yolov8.git
+```
+#### 2. Navigate to football-detection-yolov8 folder:
+```bash
+cd football-detection-yolov8
 ```
 #### 3. Install dependencies:
 ```bash
@@ -59,7 +59,7 @@ rm valid.zip
 cd train && mkdir images labels && mv *.jpg images/
 cd ../test && mkdir images labels && mv *.jpg images/
 cd ../val && mkdir images labels && mv *.jpg images/
-cd ..
+cd ../..
 ```
 #### 2. Convert dataset to YOLO format:
 ```bash

@@ -7,7 +7,7 @@ for fol in folders:
     # Path to the COCO JSON file
     coco_json_path = f'data/{fol}/_annotations.coco.json'
     # Directory where the YOLO formatted annotation files will be stored
-    yolo_annots_dir = f'data/{fol}/annots/'
+    yolo_annots_dir = f'data/{fol}/labels/'
 
     # Initialize COCO api for instance annotations
     coco = COCO(coco_json_path)
