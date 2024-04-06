@@ -1,7 +1,7 @@
 path: /home/pglowacki/piotr.glowacki2/football_detection_v8/data  # dataset root dir
-train: images/train
-val: images/val
-test: images/test
+train: train/images
+val: val/images
+test: test/images
 
 # Classes
 nc: 2  # number of classes
