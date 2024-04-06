@@ -65,7 +65,8 @@ cd ..
 ```bash
 python3 convert_to_yolo.py
 ```
-#### 3. Train the model
+### Training
+#### 1. Train the model
 ```bash
 yolo train data=football-detection-v8.yaml model=yolov8m.pt epochs=50 imgsz=640 
 ```
