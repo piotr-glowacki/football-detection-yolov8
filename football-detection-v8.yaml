@@ -1,4 +1,4 @@
-path: /home/pglowacki/piotr.glowacki2/football_detection_v8/data  # dataset root dir
+path: /home/pglowacki/piotr.glowacki2/football-detection-yolov8/data  # dataset root dir
 train: train/images
 val: val/images
 test: test/images
